@@ -4,7 +4,6 @@ import { t } from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
-import Loader from 'components/Loader';
 import PokeCard from 'components/PokeCard';
 
 import usePokemon from 'hooks/usePokemon';
@@ -31,7 +30,7 @@ const Pokemon: React.FC = () => {
 
   return (
     <>
-      {loading && <Loader />}
+      {loading && <span>Carregando</span>}
       {!loading && (
         <main>
           <PokeCard poke={pokemon} />
