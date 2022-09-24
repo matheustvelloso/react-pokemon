@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import Header from 'components/Header';
+import Loader from 'components/Loader';
 import PokemonCard from 'components/PokemonCard';
 
 import usePokemons from 'hooks/usePokemons';
@@ -26,14 +27,14 @@ const Home: React.FC = () => {
       <Header />
       <Container>
         <h1>Which pokemon would you choose?</h1>
-        {loading && <span>Carregando</span>}
+        {loading && <Loader />}
         {!loading && Array.isArray(pokemons) && (
           <main>
             <InfiniteScroll
               dataLength={pokemons.length}
               next={fetchNextPage}
               hasMore={hasMorePages}
-              loader={<span>Carregando</span>}
+              loader={<Loader />}
               style={{ overflow: 'visible' }}
             >
               <Row className="row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-2">
