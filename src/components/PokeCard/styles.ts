@@ -201,10 +201,6 @@ export const ParagraphPokeInfo = styled.p`
   margin-top: 10px;
 `;
 
-export const SpanTime = styled.span`
-  font-size: 15px;
-  font-weight: 500;
-`;
 export const MobileContainer = styled.div`
   display: flex;
   justify-content: space-between;

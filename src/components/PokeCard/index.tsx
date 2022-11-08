@@ -2,12 +2,7 @@ import { memo, useCallback, useMemo } from 'react';
 
 import { Col, Container, ProgressBar, Row } from 'react-bootstrap';
 import { FaRulerVertical } from 'react-icons/fa';
-import {
-  MdSignalCellular3Bar,
-  MdSignalWifiStatusbar4Bar,
-  MdBatteryFull,
-  MdOutlineArrowBackIosNew,
-} from 'react-icons/md';
+import { MdOutlineArrowBackIosNew } from 'react-icons/md';
 import { RiScales2Line } from 'react-icons/ri';
 
 import logoPokedex from 'assets/logoPokedex.png';
@@ -33,7 +28,6 @@ import {
   SpanPokeInfo,
   SpanPokemonId,
   SpanPokemonName,
-  SpanTime,
   SpanTypes,
 } from './styles';
 
@@ -65,21 +59,13 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
   return (
     <>
       <HeaderContainer backgroundColor={poke.specy.color.name}>
-        <MobileContainer className="d-md-none">
-          <SpanTime>9:41</SpanTime>
-          <div>
-            <MdSignalCellular3Bar className="mx-1" />
-            <MdSignalWifiStatusbar4Bar className="mx-1" />
-            <MdBatteryFull className="mx-1" />
-          </div>
+        <MobileContainer className="d-flex d-md-none">
+          <LinkHome to="/">
+            <MdOutlineArrowBackIosNew />
+          </LinkHome>
+          <HeartIcon />
         </MobileContainer>
         <Container>
-          <MobileContainer className="d-flex d-md-none">
-            <LinkHome to="/">
-              <MdOutlineArrowBackIosNew />
-            </LinkHome>
-            <HeartIcon />
-          </MobileContainer>
           <div className="d-flex justify-content-between">
             <div>
               <SpanPokemonName color={poke.specy.color.name}>
@@ -178,10 +164,11 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
             </Col>
             <Col>
               {poke.stats.map((stats, i) => (
-                <li>
+                <li
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={i}
+                >
                   <ProgressBar
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={i}
                     variant={stats.value >= 50 ? 'success' : 'danger'}
                     now={stats.value}
                   />

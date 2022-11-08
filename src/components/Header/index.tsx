@@ -1,11 +1,6 @@
 import { memo } from 'react';
 
 import { Container } from 'react-bootstrap';
-import {
-  MdSignalCellular3Bar,
-  MdSignalWifiStatusbar4Bar,
-  MdBatteryFull,
-} from 'react-icons/md';
 
 import emoji from 'assets/emoji.png';
 import imageHeader from 'assets/imageHeader.png';
@@ -15,10 +10,8 @@ import {
   HeaderBackground,
   HeaderBackgroundMobile,
   ImgContainer,
-  MobileContainer,
   ParagraphTextHeader,
   SpanTextHeader,
-  SpanTime,
 } from './styles';
 
 interface IHeaderProps {
@@ -28,15 +21,7 @@ interface IHeaderProps {
 const Header: React.FC<IHeaderProps> = () => {
   return (
     <header>
-      <HeaderBackgroundMobile className="d-block d-md-none">
-        <MobileContainer>
-          <SpanTime>9:41</SpanTime>
-          <div>
-            <MdSignalCellular3Bar className="mx-1" />
-            <MdSignalWifiStatusbar4Bar className="mx-1" />
-            <MdBatteryFull className="mx-1" />
-          </div>
-        </MobileContainer>
+      <HeaderBackgroundMobile className="d-block d-md-none pt-3">
         <Container>
           <div className="d-flex justify-content-between">
             <div>
