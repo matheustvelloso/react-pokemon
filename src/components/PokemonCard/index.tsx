@@ -2,7 +2,7 @@ import { memo, useCallback } from 'react';
 
 import logoPokedex from 'assets/logoPokedex.png';
 
-import { PokemonType } from 'types/PokemonType';
+import { PokemonTypeNormalized } from 'types/PokemonTypeNormalized';
 
 import {
   Container,
@@ -14,7 +14,7 @@ import {
 } from './styles';
 
 interface IPokemonsCardProps {
-  poke: PokemonType;
+  poke: PokemonTypeNormalized;
 }
 
 const PokemonsCard: React.FC<IPokemonsCardProps> = ({ poke }) => {
@@ -48,7 +48,7 @@ const PokemonsCard: React.FC<IPokemonsCardProps> = ({ poke }) => {
           </div>
           <img
             className="img-fluid"
-            src={poke.image ? poke.image : logoPokedex}
+            src={poke.images ? poke.images : logoPokedex}
             alt={poke.name}
           />
         </ImgContainer>
