@@ -2,9 +2,9 @@ import { memo } from 'react';
 
 import { Container } from 'react-bootstrap';
 
+import pokeTrainer from 'assets/ash.png';
 import emoji from 'assets/emoji.png';
 import imageHeader from 'assets/imageHeader.png';
-import pokeTrainer from 'assets/pokeTrainer.jpeg';
 
 import {
   HeaderBackground,

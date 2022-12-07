@@ -28,7 +28,7 @@ const PokemonsCard: React.FC<IPokemonsCardProps> = ({ poke }) => {
   }, []);
 
   return (
-    <LinkPokemon to={`/pokemon/${poke.name}`} color={poke.specy.color.name}>
+    <LinkPokemon to={`/${poke.name}`} color={poke.specy.color.name}>
       <Container backgroundColor={poke.specy.color.name}>
         <div className="d-flex justify-content-end">
           <SpanIndex color={poke.specy.color.name}>

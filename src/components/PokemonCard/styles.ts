@@ -17,7 +17,6 @@ interface ILinkPokemonProps {
 }
 export const LinkPokemon = styled(Link)<ILinkPokemonProps>`
   text-decoration: none;
-  margin-top: 30px;
   display: flex;
   justify-content: center;
   color: ${({ color, theme }) => theme.colors.pokemon[color].name};

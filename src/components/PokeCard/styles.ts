@@ -119,18 +119,13 @@ export const SpanDescription = styled.span<ISpanDescriptionProps>`
       : theme.colors.pokemon?.[color].background};
 `;
 
-export const ListStats = styled.ul`
+export const ListStats = styled.tr`
   font-weight: 500;
   font-family: Inter;
   font-style: Medium;
   font-size: 14px;
   line-height: 28px;
-  align-content: Left;
-  vertical-align: Center;
-  list-style: none;
-  li {
-    margin-bottom: 7px;
-  }
+  white-space: nowrap;
 `;
 export const SpanGender = styled.span`
   font-weight: 500;

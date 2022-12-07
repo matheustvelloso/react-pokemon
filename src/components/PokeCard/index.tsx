@@ -1,6 +1,6 @@
 import { memo, useCallback, useMemo } from 'react';
 
-import { Col, Container, ProgressBar, Row } from 'react-bootstrap';
+import { Container, ProgressBar } from 'react-bootstrap';
 import { FaRulerVertical } from 'react-icons/fa';
 import { MdOutlineArrowBackIosNew } from 'react-icons/md';
 import { RiScales2Line } from 'react-icons/ri';
@@ -65,6 +65,9 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
           </LinkHome>
           <HeartIcon />
         </MobileContainer>
+        <LinkHome className="px-3 d-none d-md-flex" to="/">
+          <MdOutlineArrowBackIosNew />
+        </LinkHome>
         <Container>
           <div className="d-flex justify-content-between">
             <div>
@@ -105,28 +108,38 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
         </div>
 
         <InfoContainer>
-          <div className="px-3">
-            <RiScales2Line />
-            <SpanPokeInfo>{`${poke.weight / 10} kg`}</SpanPokeInfo>
+          <div className="px-3 ">
+            <div style={{ whiteSpace: 'nowrap' }}>
+              <RiScales2Line />
+              <SpanPokeInfo className="px-1">{`${
+                poke.weight / 10
+              } kg`}</SpanPokeInfo>
+            </div>
             <ParagraphPokeInfo>Weight</ParagraphPokeInfo>
           </div>
           <PokeInfoContainer>
-            <FaRulerVertical />
-            <SpanPokeInfo>{`${poke.height / 10} m`}</SpanPokeInfo>
-            <ParagraphPokeInfo>Altura</ParagraphPokeInfo>
+            <div style={{ whiteSpace: 'nowrap' }}>
+              <FaRulerVertical />
+              <SpanPokeInfo className="px-1">{`${
+                poke.height / 10
+              } m`}</SpanPokeInfo>
+            </div>
+            <ParagraphPokeInfo>Height</ParagraphPokeInfo>
           </PokeInfoContainer>
           <div className="px-3">
-            <SpanPokeInfo>
-              {poke.moves[0].move.name &&
-                capitalizeString(poke.moves[0].move.name).replace('-', ' ')}
-            </SpanPokeInfo>
+            <div style={{ whiteSpace: 'nowrap' }}>
+              <SpanPokeInfo>
+                {poke.moves[0].move.name &&
+                  capitalizeString(poke.moves[0].move.name).replace('-', ' ')}
+              </SpanPokeInfo>
+            </div>
             <ParagraphPokeInfo>Major Move</ParagraphPokeInfo>
           </div>
         </InfoContainer>
         <div className="mb-3">
-          <SpanCharacteristics>Your Characteristics</SpanCharacteristics>
+          <SpanCharacteristics>Characteristics</SpanCharacteristics>
         </div>
-        <div className="d-flex">
+        <div className="d-flex pb-3">
           <SpanGender>Gender</SpanGender>
           <div className="px-3">
             <MaleIcon />
@@ -144,42 +157,89 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
             </SpanGenderPercentage>
           </div>
         </div>
-        <Row>
-          <ListStats className="d-flex">
-            <Col>
-              {poke.stats.map((stats, i) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <li key={i}>
-                  {capitalizeString(stats.stat.name).replace('-', ' ')}
-                </li>
-              ))}
-              <li>Total</li>
-            </Col>
-            <Col>
-              {poke.stats.map((stats, i) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <li key={i}>{stats.value}</li>
-              ))}
-              <li>{totalStatsValue}</li>
-            </Col>
-            <Col>
-              {poke.stats.map((stats, i) => (
-                <li
-                  // eslint-disable-next-line react/no-array-index-key
-                  key={i}
-                >
-                  <ProgressBar
-                    variant={stats.value >= 50 ? 'success' : 'danger'}
-                    now={stats.value}
-                  />
-                </li>
-              ))}
-              <li>
+        <table className="table">
+          <tbody>
+            <ListStats>
+              <td className="w-20">
+                {capitalizeString(poke.stats[0].stat.name).replace('-', ' ')}
+              </td>
+              <td>{poke.stats[0].value}</td>
+              <td style={{ padding: '11px' }}>
+                <ProgressBar
+                  variant={poke.stats[0].value >= 50 ? 'success' : 'danger'}
+                  now={poke.stats[0].value}
+                />
+              </td>
+            </ListStats>
+            <ListStats>
+              <td>
+                {capitalizeString(poke.stats[1].stat.name).replace('-', ' ')}
+              </td>
+              <td>{poke.stats[1].value}</td>
+              <td style={{ padding: '11px' }}>
+                <ProgressBar
+                  variant={poke.stats[1].value >= 50 ? 'success' : 'danger'}
+                  now={poke.stats[1].value}
+                />
+              </td>
+            </ListStats>
+            <ListStats>
+              <td>
+                {capitalizeString(poke.stats[2].stat.name).replace('-', ' ')}
+              </td>
+              <td>{poke.stats[2].value}</td>
+              <td style={{ padding: '11px' }}>
+                <ProgressBar
+                  variant={poke.stats[2].value >= 50 ? 'success' : 'danger'}
+                  now={poke.stats[2].value}
+                />
+              </td>
+            </ListStats>
+            <ListStats>
+              <td>
+                {capitalizeString(poke.stats[3].stat.name).replace('-', ' ')}
+              </td>
+              <td>{poke.stats[3].value}</td>
+              <td style={{ padding: '11px' }}>
+                <ProgressBar
+                  variant={poke.stats[3].value >= 50 ? 'success' : 'danger'}
+                  now={poke.stats[3].value}
+                />
+              </td>
+            </ListStats>
+            <ListStats>
+              <td>
+                {capitalizeString(poke.stats[4].stat.name).replace('-', ' ')}
+              </td>
+              <td>{poke.stats[4].value}</td>
+              <td style={{ padding: '11px' }}>
+                <ProgressBar
+                  variant={poke.stats[4].value >= 50 ? 'success' : 'danger'}
+                  now={poke.stats[4].value}
+                />
+              </td>
+            </ListStats>
+            <ListStats>
+              <td>
+                {capitalizeString(poke.stats[5].stat.name).replace('-', ' ')}
+              </td>
+              <td>{poke.stats[5].value}</td>
+              <td style={{ padding: '11px' }}>
+                <ProgressBar
+                  variant={poke.stats[5].value >= 50 ? 'success' : 'danger'}
+                  now={poke.stats[5].value}
+                />
+              </td>
+            </ListStats>
+            <ListStats>
+              <td>Total</td>
+              <td>{totalStatsValue}</td>
+              <td style={{ padding: '11px' }}>
                 <ProgressBar variant="info" now={totalStatsValue / 6} />
-              </li>
-            </Col>
-          </ListStats>
-        </Row>
+              </td>
+            </ListStats>
+          </tbody>
+        </table>
       </Container>
     </>
   );

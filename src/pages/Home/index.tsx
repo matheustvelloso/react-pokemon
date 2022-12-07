@@ -28,7 +28,7 @@ const Home: React.FC = () => {
       <Container>
         <h1>Which pokemon would you choose?</h1>
         {loading && pokemons.length === 0 && <Loader />}
-        {!loading && Array.isArray(pokemons) && (
+        {Array.isArray(pokemons) && (
           <main>
             <InfiniteScroll
               dataLength={pokemons.length}

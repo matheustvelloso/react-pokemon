@@ -26,4 +26,23 @@ export default createGlobalStyle`
         width: 100%;
     }
 }
+.table>:not(caption)>*>* {
+    padding: 0; 
+    background-color: var(--bs-table-bg);
+    border-bottom-width: 0; 
+    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+}
+.p-10px{
+    padding: 10px;
+}
+.w-20{
+    width: 20%;
+
+    @media(max-width: 767px){
+        width: 30%;
+    }
+    @media(max-width: 575px){
+        width: 40%;
+    }
+}
 `;

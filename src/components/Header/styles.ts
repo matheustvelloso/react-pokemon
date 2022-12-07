@@ -9,7 +9,7 @@ export const HeaderBackground = styled.div`
 
 export const HeaderBackgroundMobile = styled.div`
   background-color: #494949;
-  height: 154px;
+  height: 130px;
   border-radius: 0 0 24px 24px;
   margin-bottom: 30px;
 `;
@@ -36,7 +36,7 @@ export const ParagraphTextHeader = styled.p`
 
 export const ImgContainer = styled.div`
   width: 50px;
-  height: 50px;
+  height: 55px;
   border-radius: 10px;
   border: 2px solid #f1f1f1;
   img {
