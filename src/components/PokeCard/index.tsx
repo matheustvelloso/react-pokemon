@@ -5,7 +5,7 @@ import { FaRulerVertical } from 'react-icons/fa';
 import { MdOutlineArrowBackIosNew } from 'react-icons/md';
 import { RiScales2Line } from 'react-icons/ri';
 
-import logoPokedex from 'assets/logoPokedex.png';
+import { SpeciesType } from 'hooks/usePokemon';
 
 import { PokemonType } from 'types/PokemonType';
 
@@ -33,9 +33,10 @@ import {
 
 interface IPokeCardProps {
   poke: PokemonType;
+  species: SpeciesType;
 }
 
-const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
+const PokeCard: React.FC<IPokeCardProps> = ({ poke, species }) => {
   const getPokedexIndex = (id: number): string =>
     `#${String(id).padStart(3, '0')}`;
 
@@ -47,7 +48,7 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
 
   const totalStatsValue = useMemo(() => {
     return poke?.stats
-      ?.map(({ value }) => value)
+      ?.map(({ base_stat: baseStat }) => baseStat)
       ?.reduce((stat, prev) => prev + stat, 0);
   }, [poke.stats]);
 
@@ -58,31 +59,35 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
 
   return (
     <>
-      <HeaderContainer backgroundColor={poke.specy.color.name}>
+      <HeaderContainer backgroundColor={species?.color?.name}>
         <MobileContainer className="d-flex d-md-none">
-          <LinkHome to="/">
+          <LinkHome to="/" color={species?.color?.name}>
             <MdOutlineArrowBackIosNew />
           </LinkHome>
           <HeartIcon />
         </MobileContainer>
-        <LinkHome className="px-3 d-none d-md-flex" to="/">
+        <LinkHome
+          className="px-3 d-none d-md-flex"
+          to="/"
+          color={species?.color?.name}
+        >
           <MdOutlineArrowBackIosNew />
         </LinkHome>
         <Container>
           <div className="d-flex justify-content-between">
             <div>
-              <SpanPokemonName color={poke.specy.color.name}>
+              <SpanPokemonName color={species?.color?.name}>
                 {capitalizeString(poke.name)}
               </SpanPokemonName>
               <div className="mt-3">
-                {poke.types.data.map((type) => (
-                  <SpanTypes color={poke.specy.color.name} key={type.type.name}>
+                {poke.types.map((type) => (
+                  <SpanTypes color={species?.color?.name} key={type.type.name}>
                     {capitalizeString(type.type.name)}
                   </SpanTypes>
                 ))}
               </div>
             </div>
-            <SpanPokemonId color={poke.specy.color.name}>
+            <SpanPokemonId color={species?.color?.name}>
               {getPokedexIndex(poke.id)}
             </SpanPokemonId>
           </div>
@@ -92,18 +97,18 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
         <ImgContainer>
           <img
             className="img-fluid"
-            src={poke.image ? poke.image : logoPokedex}
+            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${poke.id}.png`}
             alt={poke.name}
           />
         </ImgContainer>
         <div className="mb-5">
-          <SpanDescription color={poke.specy.color.name}>
+          <SpanDescription color={species?.color?.name}>
             Description
           </SpanDescription>
         </div>
         <div className="mt-5 mb-5">
-          {poke.specy.descriptions.map((description) => (
-            <p key={description.text}>{description.text}</p>
+          {species.form_descriptions.map((description) => (
+            <p key={description.description}>{description.description}</p>
           ))}
         </div>
 
@@ -144,8 +149,8 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
           <div className="px-3">
             <MaleIcon />
             <SpanGenderPercentage className="px-2">
-              {poke.specy.gender_rate !== -1
-                ? 100 - genderRate(poke.specy.gender_rate)
+              {species.gender_rate !== -1
+                ? 100 - genderRate(species.gender_rate)
                 : 0}
               %
             </SpanGenderPercentage>
@@ -153,7 +158,7 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
           <div>
             <FemaleIcon />
             <SpanGenderPercentage className="px-2">
-              {genderRate(poke.specy.gender_rate)}%
+              {genderRate(species.gender_rate)}%
             </SpanGenderPercentage>
           </div>
         </div>
@@ -163,11 +168,11 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
               <td className="w-20">
                 {capitalizeString(poke.stats[0].stat.name).replace('-', ' ')}
               </td>
-              <td>{poke.stats[0].value}</td>
+              <td>{poke.stats[0].base_stat}</td>
               <td style={{ padding: '11px' }}>
                 <ProgressBar
-                  variant={poke.stats[0].value >= 50 ? 'success' : 'danger'}
-                  now={poke.stats[0].value}
+                  variant={poke.stats[0].base_stat >= 50 ? 'success' : 'danger'}
+                  now={poke.stats[0].base_stat}
                 />
               </td>
             </ListStats>
@@ -175,11 +180,11 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
               <td>
                 {capitalizeString(poke.stats[1].stat.name).replace('-', ' ')}
               </td>
-              <td>{poke.stats[1].value}</td>
+              <td>{poke.stats[1].base_stat}</td>
               <td style={{ padding: '11px' }}>
                 <ProgressBar
-                  variant={poke.stats[1].value >= 50 ? 'success' : 'danger'}
-                  now={poke.stats[1].value}
+                  variant={poke.stats[1].base_stat >= 50 ? 'success' : 'danger'}
+                  now={poke.stats[1].base_stat}
                 />
               </td>
             </ListStats>
@@ -187,11 +192,11 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
               <td>
                 {capitalizeString(poke.stats[2].stat.name).replace('-', ' ')}
               </td>
-              <td>{poke.stats[2].value}</td>
+              <td>{poke.stats[2].base_stat}</td>
               <td style={{ padding: '11px' }}>
                 <ProgressBar
-                  variant={poke.stats[2].value >= 50 ? 'success' : 'danger'}
-                  now={poke.stats[2].value}
+                  variant={poke.stats[2].base_stat >= 50 ? 'success' : 'danger'}
+                  now={poke.stats[2].base_stat}
                 />
               </td>
             </ListStats>
@@ -199,11 +204,11 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
               <td>
                 {capitalizeString(poke.stats[3].stat.name).replace('-', ' ')}
               </td>
-              <td>{poke.stats[3].value}</td>
+              <td>{poke.stats[3].base_stat}</td>
               <td style={{ padding: '11px' }}>
                 <ProgressBar
-                  variant={poke.stats[3].value >= 50 ? 'success' : 'danger'}
-                  now={poke.stats[3].value}
+                  variant={poke.stats[3].base_stat >= 50 ? 'success' : 'danger'}
+                  now={poke.stats[3].base_stat}
                 />
               </td>
             </ListStats>
@@ -211,11 +216,11 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
               <td>
                 {capitalizeString(poke.stats[4].stat.name).replace('-', ' ')}
               </td>
-              <td>{poke.stats[4].value}</td>
+              <td>{poke.stats[4].base_stat}</td>
               <td style={{ padding: '11px' }}>
                 <ProgressBar
-                  variant={poke.stats[4].value >= 50 ? 'success' : 'danger'}
-                  now={poke.stats[4].value}
+                  variant={poke.stats[4].base_stat >= 50 ? 'success' : 'danger'}
+                  now={poke.stats[4].base_stat}
                 />
               </td>
             </ListStats>
@@ -223,11 +228,11 @@ const PokeCard: React.FC<IPokeCardProps> = ({ poke }) => {
               <td>
                 {capitalizeString(poke.stats[5].stat.name).replace('-', ' ')}
               </td>
-              <td>{poke.stats[5].value}</td>
+              <td>{poke.stats[5].base_stat}</td>
               <td style={{ padding: '11px' }}>
                 <ProgressBar
-                  variant={poke.stats[5].value >= 50 ? 'success' : 'danger'}
-                  now={poke.stats[5].value}
+                  variant={poke.stats[5].base_stat >= 50 ? 'success' : 'danger'}
+                  now={poke.stats[5].base_stat}
                 />
               </td>
             </ListStats>

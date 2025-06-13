@@ -41,15 +41,20 @@ export const styledComponentsTheme = {
         name: '#fff',
         id: '#fb6c6c',
       },
-      gray: {
-        background: '#f2cdd6',
-        name: '#fff',
-        id: '#fff',
-      },
+      // gray: {
+      //   background: '#f2cdd6',
+      //   name: '#fff',
+      //   id: '#fff',
+      // },
       black: {
         background: '#000',
         name: '#fff',
         id: '#fff',
+      },
+      gray: {
+        background: '#ccc',
+        name: '#313131',
+        id: '#313131',
       },
     },
   },

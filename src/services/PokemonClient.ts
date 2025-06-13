@@ -1,10 +1,9 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import axios from 'axios';
 
 import Config from 'Config';
 
-const PokemonClient = new ApolloClient({
-  uri: Config.api.baseURL,
-  cache: new InMemoryCache(),
+const PokemonClient = axios.create({
+  baseURL: Config.api.baseURL,
 });
 
 export default PokemonClient;

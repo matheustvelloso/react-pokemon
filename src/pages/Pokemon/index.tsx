@@ -16,7 +16,7 @@ const Pokemon: React.FC = () => {
 
   const { name } = useParams();
 
-  const { pokemon, loading } = usePokemon(name);
+  const { pokemon, loading, species } = usePokemon(name);
 
   const capitalizeString = useCallback((_name: string) => {
     const str = _name;
@@ -34,7 +34,7 @@ const Pokemon: React.FC = () => {
       {loading && <Loader />}
       {!loading && (
         <main>
-          <PokeCard poke={pokemon} />
+          {pokemon && species && <PokeCard poke={pokemon} species={species} />}
         </main>
       )}
     </>

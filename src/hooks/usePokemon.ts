@@ -1,45 +1,87 @@
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { useQuery } from '@apollo/client';
+import PokemonClient from 'services/PokemonClient';
 
 import { PokemonType } from 'types/PokemonType';
 
-import { GET_POKEMON } from '../GraphQL';
-
-type PokedexDataType = {
-  results: PokemonType[];
+export type SpeciesType = {
+  id: number;
+  name: string;
+  order: number;
+  gender_rate: number;
+  capture_rate: number;
+  base_happiness: number;
+  is_baby: boolean;
+  is_legendary: boolean;
+  is_mythical: boolean;
+  hatch_counter: number;
+  has_gender_differences: boolean;
+  forms_switchable: boolean;
+  form_descriptions: [
+    { description: string; language: { name: string; url: string } },
+  ];
+  color: {
+    name: string;
+    url: string;
+  };
 };
 
 type PokemonHookType = (name: string | undefined) => {
-  pokemon: PokemonType;
+  pokemon: PokemonType | null | undefined;
+  species: SpeciesType | null | undefined;
   loading: boolean;
+  error: string | null;
 };
 
 const usePokemon: PokemonHookType = (name) => {
-  const { data, loading } = useQuery<PokedexDataType>(GET_POKEMON, {
-    skip: !name,
-    variables: { name },
-  });
+  const [pokemon, setPokemon] = useState<PokemonType | null>();
+  const [species, setSpecies] = useState<SpeciesType | null>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const [pokemon] = useMemo(
-    () =>
-      [...(data?.results ?? [])].map((_pokemon) => ({
-        ..._pokemon,
-        image: _pokemon.images.map(
-          (image) =>
-            JSON.parse(image.sprites)?.other?.['official-artwork']
-              ?.front_default,
-        )[0],
-      })),
-    [data],
-  ) as PokemonType[];
+  const fetchPokemon = useCallback(async () => {
+    try {
+      setLoading(true);
+
+      const { data } = await PokemonClient.get(`/pokemon/${name}`);
+
+      setPokemon(data);
+    } catch {
+      setError('Pokemon not found');
+      setPokemon(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [name]);
+
+  const fetchSpecies = useCallback(async () => {
+    try {
+      setLoading(true);
+
+      const { data } = await PokemonClient.get(`/pokemon-species/${name}/`);
+      setSpecies(data);
+    } catch {
+      setError('Species not found');
+      setSpecies(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [name]);
+
+  useEffect(() => {
+    fetchPokemon();
+    fetchSpecies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return useMemo(
     () => ({
       pokemon,
+      species,
       loading,
+      error,
     }),
-    [loading, pokemon],
+    [error, loading, pokemon, species],
   );
 };
 

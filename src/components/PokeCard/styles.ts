@@ -4,10 +4,8 @@ import { TbGenderHermaphrodite } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { PokemonColor } from 'types/PokemonType';
-
 interface IHeaderContainerProps {
-  backgroundColor: PokemonColor;
+  backgroundColor: string;
 }
 interface ISpanPokemonId {
   color: string;
@@ -19,7 +17,11 @@ interface ISpanTypesProps {
   color: string;
 }
 interface ISpanDescriptionProps {
-  color: PokemonColor;
+  color: string;
+}
+
+interface ILinkHomeProps {
+  color: string;
 }
 
 export const HeaderContainer = styled.div<IHeaderContainerProps>`
@@ -209,12 +211,14 @@ export const HeartIcon = styled(RiHeartLine)`
   font-size: 26px;
 `;
 
-export const LinkHome = styled(Link)`
-  color: #fff;
+export const LinkHome = styled(Link)<ILinkHomeProps>`
+  color: ${({ color, theme }) =>
+    theme.colors.pokemon?.[color].background === '#fff' ? '#000' : '#fff'};
   font-size: 26px;
 
   &:hover {
-    color: #fff;
+    color: ${({ color, theme }) =>
+      theme.colors.pokemon?.[color].background === '#fff' ? '#000' : '#fff'};
   }
 `;
 

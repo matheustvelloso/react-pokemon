@@ -32,6 +32,7 @@ export type PokemonColor =
 export type PokemonTypeNormalized = {
   id: number;
   name: string;
+  url: string;
   height: number;
   weight: number;
   image?: string;

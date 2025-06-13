@@ -1,7 +1,5 @@
 import { memo, useCallback } from 'react';
 
-import logoPokedex from 'assets/logoPokedex.png';
-
 import { PokemonTypeNormalized } from 'types/PokemonTypeNormalized';
 
 import {
@@ -10,7 +8,6 @@ import {
   LinkPokemon,
   PokemonName,
   SpanIndex,
-  SpanType,
 } from './styles';
 
 interface IPokemonsCardProps {
@@ -18,7 +15,9 @@ interface IPokemonsCardProps {
 }
 
 const PokemonsCard: React.FC<IPokemonsCardProps> = ({ poke }) => {
-  const getPokedexIndex = (id: number): string =>
+  const pokeId = poke?.url.replace(/.*\/pokemon\/(\d+)\//, '$1');
+
+  const getPokedexIndex = (id: string): string =>
     `#${String(id).padStart(3, '0')}`;
 
   const capitalizeString = useCallback((name: string) => {
@@ -28,27 +27,18 @@ const PokemonsCard: React.FC<IPokemonsCardProps> = ({ poke }) => {
   }, []);
 
   return (
-    <LinkPokemon to={`/${poke.name}`} color={poke.specy.color.name}>
-      <Container backgroundColor={poke.specy.color.name}>
+    <LinkPokemon to={`/${poke.name}`} color="gray">
+      <Container backgroundColor="gray">
         <div className="d-flex justify-content-end">
-          <SpanIndex color={poke.specy.color.name}>
-            {getPokedexIndex(poke.id)}
-          </SpanIndex>
+          <SpanIndex color="gray">{getPokedexIndex(pokeId)}</SpanIndex>
         </div>
         <div>
           <PokemonName>{capitalizeString(poke.name)}</PokemonName>
         </div>
         <ImgContainer>
-          <div>
-            {poke.types.data.map((type) => (
-              <SpanType key={type.type.name} color={poke.specy.color.name}>
-                {capitalizeString(type.type.name)}
-              </SpanType>
-            ))}
-          </div>
           <img
             className="img-fluid"
-            src={poke.images ? poke.images : logoPokedex}
+            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokeId}.png`}
             alt={poke.name}
           />
         </ImgContainer>

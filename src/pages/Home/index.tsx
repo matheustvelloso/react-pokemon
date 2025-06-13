@@ -39,7 +39,7 @@ const Home: React.FC = () => {
             >
               <Row className="row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-2">
                 {pokemons.map((pokemon) => (
-                  <Col key={pokemon.id}>
+                  <Col key={pokemon.name}>
                     <PokemonCard poke={pokemon} />
                   </Col>
                 ))}

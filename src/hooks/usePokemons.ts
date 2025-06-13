@@ -1,52 +1,54 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { useQuery } from '@apollo/client';
+import PokemonClient from 'services/PokemonClient';
 
-import { normalizePokemonsQueryResults } from 'helpers/helpers';
-
-import { PokemonType } from 'types/PokemonType';
 import { PokemonTypeNormalized } from 'types/PokemonTypeNormalized';
-
-import { GET_POKEMONS } from '../GraphQL';
-
-type PokedexDataType = {
-  results: PokemonType[];
-};
 
 type PokemonsHookType = () => {
   pokemons: PokemonTypeNormalized[];
   loading: boolean;
   fetchNextPage: () => void;
   hasMorePages: boolean;
+  error: string | null;
 };
-
-const RESULTS_PER_PAGE = 24;
 
 const usePokemons: PokemonsHookType = () => {
   const [offset, setOffset] = useState(0);
   const [hasMorePages, setHasMorePages] = useState(true);
+  const [nextPage, setNextPage] = useState(0);
   const [pokemons, setPokemons] = useState<PokemonTypeNormalized[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const { data, loading } = useQuery<PokedexDataType>(GET_POKEMONS, {
-    variables: { limit: RESULTS_PER_PAGE, offset },
-  });
+  const fetchPokemons = useCallback(
+    async (limit = 24) => {
+      try {
+        setLoading(true);
+        const params = { offset, limit };
+
+        const { data } = await PokemonClient.get('/pokemon', { params });
+        setHasMorePages(!!data.next);
+        setNextPage(Number(data.next.replace(/^.*offset=([^&]+).*$/, '$1')));
+        setPokemons((prev) => [...prev, ...data.results]);
+      } catch {
+        setError('Pokemons not found');
+        setPokemons([]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [offset],
+  );
 
   const fetchNextPage = useCallback(
-    () => setOffset((prev) => prev + RESULTS_PER_PAGE),
-    [],
+    () => setOffset(() => nextPage),
+    [nextPage],
   );
 
   useEffect(() => {
-    if (!!data && Array.isArray(data.results))
-      setPokemons((prev) => [
-        ...prev,
-        ...normalizePokemonsQueryResults(data.results),
-      ]);
-
-    if (data?.results.length && data?.results.length < RESULTS_PER_PAGE) {
-      setHasMorePages(false);
-    }
-  }, [data]);
+    fetchPokemons();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offset]);
 
   return useMemo(
     () => ({
@@ -54,8 +56,9 @@ const usePokemons: PokemonsHookType = () => {
       loading,
       fetchNextPage,
       hasMorePages,
+      error,
     }),
-    [fetchNextPage, hasMorePages, loading, pokemons],
+    [error, fetchNextPage, hasMorePages, loading, pokemons],
   );
 };
 

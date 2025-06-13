@@ -2,12 +2,14 @@ type DescriptionType = {
   text: string;
 };
 type Type = {
+  slot: number;
   type: {
     name: string;
+    url: string;
   };
 };
 type StatsAndValuesType = {
-  value: number;
+  base_stat: number;
   stat: {
     name: string;
   };
@@ -55,9 +57,7 @@ export type PokemonType = {
     descriptions: DescriptionType[];
   };
   images: SpriteType[];
-  types: {
-    data: Type[];
-  };
+  types: Type[];
   moves: MoveType[];
   stats: StatsAndValuesType[];
 };
